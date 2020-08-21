@@ -22,7 +22,10 @@ public class Contact extends Person {
 	public void setPh_no(int ph_no) {
 		this.ph_no = ph_no;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "\nContact [id=" + this.getId() + ", first_name=" + this.getFirst_name() + ", last_name=" + this.getLast_name()  +"Ph.No=" + this.getPh_no() + "]";
+	}		
+	
 }
