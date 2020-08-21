@@ -1,5 +1,15 @@
 package com.omkar.phonebook.interfaces;
 
-public interface PhoneBookCRUD {		
+import java.util.List;
+
+public interface PhoneBookCRUD<T>{		
 	
+	public List<T> getAll();
+	
+	public T getDetails(String name);
+		
+	public void add(T data);
+	
+	public T delete(int id);
+				
 }
