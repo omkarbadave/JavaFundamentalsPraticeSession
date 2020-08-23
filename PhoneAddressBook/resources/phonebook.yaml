@@ -1,0 +1,18 @@
+- !!com.omkar.phonebook.pojos.PhoneBook
+  contactsList: &id001
+  - first_name: Adi
+    id: 0
+    last_name: Nath
+    ph_no: 123456789
+  - first_name: Aditi
+    id: 1
+    last_name: Nath
+    ph_no: 123456788
+  - first_name: Omkar
+    id: 2
+    last_name: Bdave
+    ph_no: 2323443
+  phoneBookName: Friends
+- !!com.omkar.phonebook.pojos.PhoneBook
+  contactsList: *id001
+  phoneBookName: Family

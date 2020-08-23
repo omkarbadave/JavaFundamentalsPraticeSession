@@ -7,12 +7,16 @@ public class PhoneBook {
 	
 	private String phoneBookName;
 	
-	List<Contact> ContactsList = new ArrayList<Contact>();
-
+	List<Contact> contactsList = new ArrayList<Contact>();
+	
+	public PhoneBook() {
+		super();
+	}
+	
 	public PhoneBook(String phoneBookName, List<Contact> contactsList) {
 		super();
 		this.phoneBookName = phoneBookName;
-		ContactsList = contactsList;
+		this.contactsList = contactsList;
 	}
 
 	/**
@@ -33,13 +37,20 @@ public class PhoneBook {
 	 * @return the contactsList
 	 */
 	public List<Contact> getContactsList() {
-		return ContactsList;
+		return contactsList;
 	}
 
 	/**
 	 * @param contactsList the contactsList to set
 	 */
 	public void setContactsList(List<Contact> contactsList) {
-		ContactsList = contactsList;
-	}		
+		this.contactsList = contactsList;
+	}
+
+	@Override
+	public String toString() {
+		return "PhoneBook [phoneBookName=" + phoneBookName + ", contactsList=" + contactsList + "]";
+	}	
+	
+	
 }

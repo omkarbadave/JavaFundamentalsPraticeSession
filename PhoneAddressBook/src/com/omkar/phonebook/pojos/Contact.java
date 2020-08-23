@@ -3,7 +3,11 @@ package com.omkar.phonebook.pojos;
 public class Contact extends Person {
 
 	private int ph_no;
-
+	
+	public Contact() {
+		super();
+	}
+	
 	public Contact(int id, String first_name, String last_name, int ph_no) {
 		super(id, first_name, last_name);
 		this.ph_no = ph_no;
@@ -25,7 +29,7 @@ public class Contact extends Person {
 
 	@Override
 	public String toString() {
-		return "\nContact [id=" + this.getId() + ", first_name=" + this.getFirst_name() + ", last_name=" + this.getLast_name()  +"Ph.No=" + this.getPh_no() + "]";
-	}		
+		return "\nContact [\nId="+this.getId()+", ph_no=" + ph_no + ", first_name="+this.getFirst_name()+", last_name="+this.getLast_name()+"]";
+	}	
 	
 }

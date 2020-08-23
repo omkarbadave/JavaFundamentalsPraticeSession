@@ -12,6 +12,10 @@ public class Person {
 		this.last_name = last_name;
 	}
 
+	public Person() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return the id
 	 */
@@ -52,5 +56,10 @@ public class Person {
 	 */
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
-	}				
+	}
+
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + "]";
+	}			
 }
