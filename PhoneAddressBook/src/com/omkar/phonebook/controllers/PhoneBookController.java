@@ -22,11 +22,12 @@ public class PhoneBookController {
 			System.out.println("==========Menu========");
 			System.out.println("Active PhoneBook: "+this.phoneBookService.getActivePhoneBook());
 			System.out.println(""
-					+ "1. View All Phonebooks\n"
+					+ "1. View All Phonebooks.\n"
 					+ "2. Add new phone book.\n"
-					+ "3. View Contacts in current phone book\n"
-					+ "4. Add a contact to current phone book.\n"
-					+ "5. Delete a contact from phone book"
+					+ "3. Delete phone book.\n"
+					+ "4. View Contacts in current phone book.\n"
+					+ "5. Add a contact to current phone book.\n"
+					+ "6. Delete a contact from current phone book."
 					);
 			choice = this.in.nextInt();
 			switch(choice) {
@@ -34,16 +35,23 @@ public class PhoneBookController {
 					break;
 				case 2:	this.addNewPhoneBook();
 					break;
-				case 3: this.viewAllContacts();; 											
+				case 3: this.deletePhoneBook();
 					break;
-				case 4: this.addNewContact();
+				case 4: this.viewAllContacts();; 											
 					break;
-				case 5:	this.deleteContact();
+				case 5: this.addNewContact();
+					break;
+				case 6:	this.deleteContact();
 					break;
 				default :
 					System.out.println("Invalid choice please retry.");
 			}
 		}while(choice>0);
+	}
+
+	private void deletePhoneBook() {
+		// TODO Auto-generated method stub
+		this.phoneBookService.deletePhoneBook();
 	}
 
 	private void addNewPhoneBook() {
@@ -54,6 +62,7 @@ public class PhoneBookController {
 	private void getAllPhoneBooks() {
 		// TODO Auto-generated method stub
 		this.phoneBookService.getAllPhoneBooks();
+		this.phoneBookService.triggerChangeActivePhoneBook(true);
 	}
 
 	private void viewAllContacts() {

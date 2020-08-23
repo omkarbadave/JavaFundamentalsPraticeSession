@@ -35,9 +35,10 @@ public class PhoneBookService {
 		super();
 		if(PhonebookList.size() == 0) {
 			this.addNewPhoneBook("Default");
+		}else {
+			this.switchActivePhonebook(PhonebookList.get(0).getPbid());
 		}
-		this.phoneBookManager = new PhoneBookManager(PhonebookList.get(0));
-		this.switchActivePhonebook(PhonebookList.get(0).getPbid());
+		this.phoneBookManager = new PhoneBookManager(PhonebookList.get(0));		
 		this.in = in;
 	}
 
@@ -63,9 +64,14 @@ public class PhoneBookService {
 		} else {
 			System.out.println("Please enter an id of a contact that you want to delete:");
 			this.viewAllContacts();
-			this.phoneBookManager.delete(this.in.nextInt());
-			System.out.println("The updated contact list is as follows:");
-			this.viewAllContacts();
+			Contact deletedContact = this.phoneBookManager.delete(this.in.nextInt());
+			if(deletedContact instanceof Contact) {
+				System.out.println("The updated contact list is as follows:");
+				this.viewAllContacts();
+			}else {
+				System.out.println("The contact with specified id doesnt exist.");
+			}
+			
 		}
 	}
 
@@ -77,36 +83,52 @@ public class PhoneBookService {
 		return this.pj.getPhoneBookName();
 	}
 	
-	public void getAllPhoneBooks() {
+	public void getAllPhoneBooks() {		
 		System.out.println("Following are the list of active phone books:");
-		for (Iterator iterator = PhonebookList.iterator(); iterator.hasNext();) {
+		for (Iterator<PhoneBook> iterator = PhonebookList.iterator(); iterator.hasNext();) {
 			PhoneBook phoneBook = (PhoneBook) iterator.next();
-			System.out.println("* Id: "+phoneBook.getPbid()+", Name: "+phoneBook.getPhoneBookName());
-		}
-		if(PhonebookList.size()>1) {
+			if(phoneBook.getPbid() == pj.getPbid()) {
+				System.out.println("* Id: "+phoneBook.getPbid()+", Name: "+phoneBook.getPhoneBookName());
+			}else {
+			System.out.println("  Id: "+phoneBook.getPbid()+", Name: "+phoneBook.getPhoneBookName());
+			}
+		}				
+	}
+	
+	public void triggerChangeActivePhoneBook(boolean triggerChnage) {
+		if(triggerChnage) {
 			System.out.print("\nDo you wish to change the active phone book (Y/N): ");
 			String choice = in.next();
 			if(choice.equals("Y")) {
 				this.switchActivePhonebook(-1);
 			}
-		}		
+		}
 	}
 	
 	public void switchActivePhonebook(int pbid) {
 		int activePhoneBookId;
-		if(pbid<0) {
+		if(PhonebookList.size() == 0) {
+			System.out.println("There are no phonebooks currently available, Please create a few and retry.");
+			return;
+		}else if(pbid<0) {
 			System.out.print("Enter the id of phone book you want to set as active phone book: ");
 			activePhoneBookId = in.nextInt();	
 		}else {
 			activePhoneBookId = pbid;
-		}		
-		for (Iterator iterator = PhonebookList.iterator(); iterator.hasNext();) {
-			PhoneBook phoneBook = (PhoneBook) iterator.next();
-			if(phoneBook.getPbid() == activePhoneBookId) {
-				this.pj = phoneBook;
-			}
 		}
-		this.phoneBookManager.switchActivePhoneBook(this.pj);
+		if(PhonebookList.size()>0) {
+			for (Iterator<PhoneBook> iterator = PhonebookList.iterator(); iterator.hasNext();) {
+				PhoneBook phoneBook = (PhoneBook) iterator.next();
+				if(phoneBook.getPbid() == activePhoneBookId) {
+					this.pj = phoneBook;
+				}
+			}
+		}else{
+			this.pj = PhonebookList.get(0);
+		}
+		if(this.phoneBookManager != null) {
+			this.phoneBookManager.switchActivePhoneBook(this.pj);
+		}		
 		System.out.println("Changed the active phone book to :"+this.pj.getPhoneBookName());
 	}
 	
@@ -116,6 +138,7 @@ public class PhoneBookService {
 			phoneBookName = in.next();
 		}
 		PhonebookList.add(new PhoneBook(PhonebookList.size(), phoneBookName, new ArrayList<Contact>()));
+		
 		this.switchActivePhonebook(PhonebookList.get(PhonebookList.size()-1).getPbid());
 		this.writeToYAMLFile(PhonebookList);
 	}
@@ -156,6 +179,32 @@ public class PhoneBookService {
 			// TODO: handle exception
 			   System.out.println(e);
 		}
+	}
+
+	public void deletePhoneBook() {
+		// TODO Auto-generated method stub
+		this.getAllPhoneBooks();
+		System.out.println("Please enter the id of the phone book to be delete: ");
+		int pbid = in.nextInt();
+		boolean wasActivePhoneBook = false,phonebookFound = false;
+		for (Iterator<PhoneBook> iterator = PhonebookList.iterator(); iterator.hasNext();) {
+			PhoneBook phoneBook = (PhoneBook) iterator.next();
+			if(phoneBook.getPbid() == pbid) {
+				wasActivePhoneBook = true;
+				phonebookFound = true;
+				iterator.remove();
+			}			
+		}
+		if(phonebookFound == false) {
+			System.out.println("The phone book with specified id was not found and cannot be deleted");
+		}else if(wasActivePhoneBook == true) {
+			System.out.println("The active phonebook was deleted successfully.");
+			this.getAllPhoneBooks();
+			triggerChangeActivePhoneBook(true);
+		}else {
+			System.out.println("The specified phone book entry was deleted.");
+		}
+		this.writeToYAMLFile(PhonebookList);
 	}
 
 }
