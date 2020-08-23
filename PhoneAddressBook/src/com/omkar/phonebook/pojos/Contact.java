@@ -29,7 +29,7 @@ public class Contact extends Person {
 
 	@Override
 	public String toString() {
-		return "\nContact [\nId="+this.getId()+", ph_no=" + ph_no + ", first_name="+this.getFirst_name()+", last_name="+this.getLast_name()+"]";
+		return "\nContact [Id="+this.getId()+", ph_no=" + ph_no + ", first_name="+this.getFirst_name()+", last_name="+this.getLast_name()+"]\n";
 	}	
 	
 }

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,7 +25,7 @@ public class PhoneBookService {
 	Scanner in;
 
 	static {
-		boolean readSuccessFull = readPersonsFromYAMLFile();
+		boolean readSuccessFull = readDataFromYAMLFile();
 		System.out.println(readSuccessFull);
 		if(readSuccessFull == false) {
 			PhonebookList.add(new PhoneBook(PhonebookList.size(), "Default", new ArrayList<Contact>()));
@@ -34,6 +35,7 @@ public class PhoneBookService {
 	public PhoneBookService(Scanner in) {
 		super();		
 		this.phoneBookManager = new PhoneBookManager(PhoneBookService.PhonebookList.get(0));
+		this.pj = PhoneBookService.PhonebookList.get(0);
 		this.in = in;
 	}
 
@@ -68,8 +70,32 @@ public class PhoneBookService {
 	public void viewAllContacts() {
 		System.out.println(this.phoneBookManager.getAll());
 	}
+	
+	public String getActivePhoneBook() {
+		return this.pj.getPhoneBookName();
+	}
+	
+	public void getAllPhoneBooks() {
+		System.out.println("Following are the list of active phone books:");
+		for (Iterator iterator = PhonebookList.iterator(); iterator.hasNext();) {
+			PhoneBook phoneBook = (PhoneBook) iterator.next();
+			System.out.println("* Id: "+phoneBook.getPbid()+", Name: "+phoneBook.getPhoneBookName());
+		}
+		System.out.print("\nDo you wish to change the active phone book (Y/N): ");
+		String choice = in.next();
+		if(choice.equals("Y")) {
+			System.out.print("Enter the id of phone book you want to set as active phone book: ");
+			int activePhoneBookId = in.nextInt();
+			for (Iterator iterator = PhonebookList.iterator(); iterator.hasNext();) {
+				PhoneBook phoneBook = (PhoneBook) iterator.next();
+				if(phoneBook.getPbid() == activePhoneBookId) {
+					this.pj = phoneBook;
+				}
+			}
+		}
+	}
 
-	public static boolean readPersonsFromYAMLFile() {		
+	public static boolean readDataFromYAMLFile() {		
 		try {
 			File f1 = new File("resources\\phonebook.yaml");
 			InputStream input = new FileInputStream(f1);

@@ -20,19 +20,27 @@ public class PhoneBookController {
 		do{
 			System.out.println("\nWelcome to phone book app");
 			System.out.println("==========Menu========");
-			System.out.println("1. View Contacts in phone book \n2. Add a contact to current phone book. \n3. Delete a contact from phone book ");
+			System.out.println("Active PhoneBook: "+this.phoneBookService.getActivePhoneBook());
+			System.out.println("1. View All Phonebooks\n2. View Contacts in current phone book\n3. Add a contact to current phone book.\n4. Delete a contact from phone book");
 			choice = this.in.nextInt();
 			switch(choice) {
-				case 1: this.viewAllContacts();
+				case 1: this.getAllPhoneBooks();
 					break;
-				case 2: this.addNewContact();						
+				case 2: this.viewAllContacts();; 											
 					break;
-				case 3: this.deleteContact();
+				case 3: this.addNewContact();
+					break;
+				case 4:	this.deleteContact();
 					break;
 				default :
 					System.out.println("Invalid choice please retry.");
 			}
 		}while(choice>0);
+	}
+
+	private void getAllPhoneBooks() {
+		// TODO Auto-generated method stub
+		this.phoneBookService.getAllPhoneBooks();
 	}
 
 	private void viewAllContacts() {

@@ -6,3 +6,11 @@
     ph_no: 122232232
   pbid: 0
   phoneBookName: Default
+- !!com.omkar.phonebook.pojos.PhoneBook
+  contactsList:
+  - first_name: Adi
+    id: 0
+    last_name: Badave
+    ph_no: 122232232
+  pbid: 1
+  phoneBookName: Friends
