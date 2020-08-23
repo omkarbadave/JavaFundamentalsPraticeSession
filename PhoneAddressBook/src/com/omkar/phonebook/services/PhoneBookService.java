@@ -26,16 +26,18 @@ public class PhoneBookService {
 
 	static {
 		boolean readSuccessFull = readDataFromYAMLFile();
-		System.out.println(readSuccessFull);
 		if(readSuccessFull == false) {
-			PhonebookList.add(new PhoneBook(PhonebookList.size(), "Default", new ArrayList<Contact>()));
+			System.out.println("No phonebooks found hence creating a default phonebook..");
 		}
 	}
 
 	public PhoneBookService(Scanner in) {
-		super();		
-		this.phoneBookManager = new PhoneBookManager(PhoneBookService.PhonebookList.get(0));
-		this.pj = PhoneBookService.PhonebookList.get(0);
+		super();
+		if(PhonebookList.size() == 0) {
+			this.addNewPhoneBook("Default");
+		}
+		this.phoneBookManager = new PhoneBookManager(PhonebookList.get(0));
+		this.switchActivePhonebook(PhonebookList.get(0).getPbid());
 		this.in = in;
 	}
 
@@ -81,18 +83,40 @@ public class PhoneBookService {
 			PhoneBook phoneBook = (PhoneBook) iterator.next();
 			System.out.println("* Id: "+phoneBook.getPbid()+", Name: "+phoneBook.getPhoneBookName());
 		}
-		System.out.print("\nDo you wish to change the active phone book (Y/N): ");
-		String choice = in.next();
-		if(choice.equals("Y")) {
+		if(PhonebookList.size()>1) {
+			System.out.print("\nDo you wish to change the active phone book (Y/N): ");
+			String choice = in.next();
+			if(choice.equals("Y")) {
+				this.switchActivePhonebook(-1);
+			}
+		}		
+	}
+	
+	public void switchActivePhonebook(int pbid) {
+		int activePhoneBookId;
+		if(pbid<0) {
 			System.out.print("Enter the id of phone book you want to set as active phone book: ");
-			int activePhoneBookId = in.nextInt();
-			for (Iterator iterator = PhonebookList.iterator(); iterator.hasNext();) {
-				PhoneBook phoneBook = (PhoneBook) iterator.next();
-				if(phoneBook.getPbid() == activePhoneBookId) {
-					this.pj = phoneBook;
-				}
+			activePhoneBookId = in.nextInt();	
+		}else {
+			activePhoneBookId = pbid;
+		}		
+		for (Iterator iterator = PhonebookList.iterator(); iterator.hasNext();) {
+			PhoneBook phoneBook = (PhoneBook) iterator.next();
+			if(phoneBook.getPbid() == activePhoneBookId) {
+				this.pj = phoneBook;
 			}
 		}
+		this.phoneBookManager.switchActivePhoneBook(this.pj);
+		System.out.println("Changed the active phone book to :"+this.pj.getPhoneBookName());
+	}
+	
+	public void addNewPhoneBook(String phoneBookName) {
+		if(phoneBookName == null) {
+			System.out.println("Please enter a name for new phonebook: ");
+			phoneBookName = in.next();
+		}
+		PhonebookList.add(new PhoneBook(PhonebookList.size(), phoneBookName, new ArrayList<Contact>()));
+		this.switchActivePhonebook(PhonebookList.get(PhonebookList.size()-1).getPbid());
 	}
 
 	public static boolean readDataFromYAMLFile() {		

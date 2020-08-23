@@ -67,5 +67,8 @@ public class PhoneBookManager implements PhoneBookCRUD<Contact> {
 		return null;
 	}
 	
+	public void switchActivePhoneBook(PhoneBook pb) {
+		this.pb = pb;
+	}
 
 }
