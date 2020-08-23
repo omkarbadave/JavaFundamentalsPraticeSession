@@ -117,6 +117,7 @@ public class PhoneBookService {
 		}
 		PhonebookList.add(new PhoneBook(PhonebookList.size(), phoneBookName, new ArrayList<Contact>()));
 		this.switchActivePhonebook(PhonebookList.get(PhonebookList.size()-1).getPbid());
+		this.writeToYAMLFile(PhonebookList);
 	}
 
 	public static boolean readDataFromYAMLFile() {		
