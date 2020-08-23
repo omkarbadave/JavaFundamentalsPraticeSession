@@ -26,6 +26,9 @@ public class PhoneBookService {
 	static {
 		boolean readSuccessFull = readPersonsFromYAMLFile();
 		System.out.println(readSuccessFull);
+		if(readSuccessFull == false) {
+			PhonebookList.add(new PhoneBook(PhonebookList.size(), "Default", new ArrayList<Contact>()));
+		}
 	}
 
 	public PhoneBookService(Scanner in) {
@@ -66,13 +69,6 @@ public class PhoneBookService {
 		System.out.println(this.phoneBookManager.getAll());
 	}
 
-	public List<Contact> loadContacts() {
-		List<Contact> contactList = new ArrayList<Contact>();
-		contactList.add(new Contact(0, "Adi", "Nath", 123456789));
-		contactList.add(new Contact(1, "Aditi", "Nath", 123456788));
-		return contactList;
-	}
-
 	public static boolean readPersonsFromYAMLFile() {		
 		try {
 			File f1 = new File("resources\\phonebook.yaml");
@@ -84,6 +80,7 @@ public class PhoneBookService {
 		    }catch (Exception e) {
 				// TODO: handle exception
 		    	System.out.println("ClassCastException");
+		    	return false;
 			}		    	
 		    System.out.println(PhonebookList);
 		    return true;

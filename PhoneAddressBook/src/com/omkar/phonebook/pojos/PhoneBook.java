@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhoneBook {
-	
+	private int pbid;
 	private String phoneBookName;
 	
 	List<Contact> contactsList = new ArrayList<Contact>();
@@ -13,10 +13,25 @@ public class PhoneBook {
 		super();
 	}
 	
-	public PhoneBook(String phoneBookName, List<Contact> contactsList) {
+	public PhoneBook(int pbid, String phoneBookName, List<Contact> contactsList) {
 		super();
+		this.pbid = pbid;
 		this.phoneBookName = phoneBookName;
 		this.contactsList = contactsList;
+	}
+
+	/**
+	 * @return the pbid
+	 */
+	public int getPbid() {
+		return pbid;
+	}
+
+	/**
+	 * @param pbid the pbid to set
+	 */
+	public void setPbid(int pbid) {
+		this.pbid = pbid;
 	}
 
 	/**
@@ -49,7 +64,8 @@ public class PhoneBook {
 
 	@Override
 	public String toString() {
-		return "PhoneBook [phoneBookName=" + phoneBookName + ", contactsList=" + contactsList + "]";
+		return "PhoneBook [phonebookid="+pbid+", phoneBookName=" + phoneBookName + ", contactsList=" + contactsList + "]";
+		
 	}	
 	
 	
